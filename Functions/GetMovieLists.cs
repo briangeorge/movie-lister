@@ -17,9 +17,10 @@ namespace Arcadia.Challenge
             //TODO: get this from ClaimsPrincipal
             var userid = "1";
 
-            var provider = new MovieListProvider("TODO: connection string");
+            var repository = new MovieListRepository("TODO: connection string");
 
-            var movieLists = await provider.GetMovieListsAsync(userid);
+            //TODO: Add error handling
+            var movieLists = await repository.GetMovieListsAsync(userid);
 
             return new OkObjectResult(movieLists);
         }

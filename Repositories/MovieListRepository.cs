@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-public class MovieListProvider
+public class MovieListRepository
 {
     private readonly string _connectionString;
 
-    public MovieListProvider(string connectionString)
+    public MovieListRepository(string connectionString)
     {
         this._connectionString = connectionString;
     }
@@ -23,6 +24,17 @@ public class MovieListProvider
                         WHERE
                             UserId=@UserId";
             return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
+        }
+    }
+
+    public async Task<int> CreateMovieListAsync(MovieList data)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var sql = @"INSERT INTO MovieList 
+                            (Name, UserId) VALUES(@Name, @UserId);
+                        SELECT SCOPE_IDENTITY()";
+            return await connection.ExecuteScalarAsync<int>(sql, data);
         }
     }
 }

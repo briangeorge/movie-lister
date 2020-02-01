@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +16,21 @@ namespace Arcadia.Challenge
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            //TODO: get this from ClaimsPrincipal
+            var userid = "1";
 
-            string name = req.Query["name"];
+            var repository = new MovieListRepository("TODO: connection string");
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var data = JsonConvert.DeserializeObject<MovieList>(requestBody);
+            data.UserId = userid;
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            //eventually this would verify a unique name
+
+            //TODO: add error handling
+            var newMovieListId = await repository.CreateMovieListAsync(data);
+
+            return new OkObjectResult(newMovieListId);
         }
     }
 }
