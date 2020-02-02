@@ -18,11 +18,12 @@ public class MovieListRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             var sql = @"SELECT 
-                            ml.Title, ml.Id, COUNT(mtml.Id) 
+                            ml.Title, ml.Id, COUNT(mtml.Id), AVG(m.UserRating) 
                         FROM
                             MovieList ml
                         JOIN 
                             MovieToMovieList mtml on ml.Id = mtml.MovieListId and ml.UserId=@UserId
+                            Movie m on m.Id = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
             return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
