@@ -17,7 +17,7 @@ namespace Arcadia.Challenge
             //TODO: get this from ClaimsPrincipal
             var userid = "1";
 
-            var repository = new MovieListRepository("TODO: connection string");
+            var repository = new MovieListRepository(ConnectionStringRepository.GetSqlAzureConnectionString("SQLConnectionString"));
 
             //TODO: Add error handling
             var movieLists = await repository.GetMovieListsAsync(userid);

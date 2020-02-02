@@ -19,7 +19,7 @@ namespace Arcadia.Challenge
             //TODO: get this from ClaimsPrincipal
             var userid = "1";
 
-            var repository = new MovieListRepository("TODO: connection string");
+            var repository = new MovieListRepository(ConnectionStringRepository.GetSqlAzureConnectionString("SQLConnectionString"));
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<MovieList>(requestBody);
