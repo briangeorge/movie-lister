@@ -29,8 +29,9 @@ namespace Arcadia.Challenge
 
             //TODO: add error handling
             var newMovieListId = await repository.CreateMovieListAsync(data);
+            data.Id = newMovieListId;
 
-            return new OkObjectResult(newMovieListId);
+            return new OkObjectResult(data);
         }
     }
 }

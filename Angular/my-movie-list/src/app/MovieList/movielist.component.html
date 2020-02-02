@@ -1,0 +1,32 @@
+<div>
+    <input type='text' [(ngModel)]='name' />
+    <button (click)='create()'>Create</button>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    List Title
+                </th>
+                <th>
+                    Number of Movies
+                </th>
+                <th>
+                    Average Rating
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let list of movieLists'>
+                <td>
+                    {{list.Name}}
+                </td>
+                <td>
+                    {{list.MovieCount}}
+                </td>
+                <td>
+                    {{list.AverageRating}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
