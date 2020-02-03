@@ -11,13 +11,7 @@ export class MovieListComponent implements OnInit {
     movieLists: IMovieList[] = [];
     @Input() name: string;
     create(): void {
-        //TODO Call Create movie list api
-        this.movieLists.push({
-            Id: 1,
-            Name: 'test',
-            AverageRating: 4.3,
-            MovieCount: 7
-        })
+        this.movieLists.push(this.movieListService.createMovieList());
     }
 
     ngOnInit(): void {

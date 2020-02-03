@@ -22,4 +22,14 @@ export class MovieListService {
             AverageRating: 3.7
         }];
     }
+
+    createMovieList(): IMovieList{
+        //TODO Call Create movie list api
+        return {
+            Id: 1,
+            Name: 'test',
+            AverageRating: 4.3,
+            MovieCount: 7
+        };
+    }
 }
