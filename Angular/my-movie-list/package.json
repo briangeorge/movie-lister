@@ -22,10 +22,12 @@
     "@angular/router": "^8.2.14",
     "core-js": "^2.4.1",
     "rxjs": "^6.5.4",
-    "zone.js": "^0.9.1",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.9.1",
     "rxjs-compat": "^6.0.0-rc.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~0.803.24",
     "@angular-devkit/core": "^8.3.24",
     "@angular/cli": "^8.3.24",
     "@angular/compiler-cli": "^8.2.14",
@@ -33,7 +35,7 @@
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
-    "codelyzer": "^4.0.1",
+    "codelyzer": "^5.0.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
