@@ -9,17 +9,21 @@ export class MovieListComponent implements OnInit {
     constructor(private movieListService: MovieListService) {
     }
     movieLists: IMovieList[] = [];
+    errorMessage: string;
     @Input() name: string;
     create(): void {
+        //if (this.name && this.name.length > 0) {
         this.movieListService.createMovieList(this.name).subscribe({
-            next: movieList => this.movieLists.push(movieList)
+            next: movieList => this.movieLists.push(movieList),
+            error: err => this.errorMessage = err
         });
+        //}
     }
 
     ngOnInit(): void {
-        //TODO: add error handling
         this.movieListService.getMovieLists().subscribe({
-            next: movieLists => this.movieLists = movieLists
+            next: movieLists => this.movieLists = movieLists,
+            error: err => this.errorMessage = err
         });
     }
 }

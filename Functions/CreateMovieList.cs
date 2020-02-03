@@ -23,6 +23,10 @@ namespace Arcadia.Challenge
 
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var data = JsonConvert.DeserializeObject<MovieList>(requestBody);
+            if (string.IsNullOrEmpty(data.Name))
+            {
+                return new BadRequestObjectResult("Name is required");
+            }
             data.UserId = userid;
 
             //eventually this would verify a unique name
