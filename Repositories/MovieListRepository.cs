@@ -18,12 +18,11 @@ public class MovieListRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             var sql = @"SELECT 
-                            ml.Title, ml.Id, COUNT(mtml.Id), AVG(m.UserRating) 
+                            ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(m.UserRating) AS AverageRating
                         FROM
                             MovieList ml
-                        JOIN 
-                            MovieToMovieList mtml on ml.Id = mtml.MovieListId and ml.UserId=@UserId
-                            Movie m on m.Id = mtml.MovieId
+                        LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId and ml.UserId=@UserId
+                        LEFT OUTER JOIN Movie m on m.Id = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
             return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
@@ -35,7 +34,7 @@ public class MovieListRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             var sql = @"INSERT INTO MovieList 
-                            (Name, UserId) VALUES(@Name, @UserId);
+                            (Title, UserId) VALUES(@Name, @UserId);
                         SELECT SCOPE_IDENTITY()";
             return await connection.ExecuteScalarAsync<int>(sql, data);
         }

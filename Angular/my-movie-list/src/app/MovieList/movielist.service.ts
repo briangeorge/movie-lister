@@ -1,35 +1,23 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http"
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MovieListService {
-    getMovieLists(): IMovieList[] {
-        return [{
-            Id: 1,
-            Name: 'List 1',
-            MovieCount: 6,
-            AverageRating: 4.3
-        }, {
-            Id: 2,
-            Name: 'List 2',
-            MovieCount: 3,
-            AverageRating: 2
-        }, {
-            Id: 3,
-            Name: 'List 3',
-            MovieCount: 9,
-            AverageRating: 3.7
-        }];
+    private getUrl: string = "http://localhost:7071/api/GetMovieLists";
+    private createUrl: string = "http://localhost:7071/api/CreateMovieList";
+    constructor(private http: HttpClient) { }
+    getMovieLists(): Observable<IMovieList[]> {
+        //todo: add exception handling
+        return this.http.get<IMovieList[]>(this.getUrl);
     }
 
-    createMovieList(): IMovieList{
+    createMovieList(name: string): Observable<IMovieList> {
         //TODO Call Create movie list api
-        return {
-            Id: 1,
-            Name: 'test',
-            AverageRating: 4.3,
-            MovieCount: 7
-        };
+        return this.http.post<IMovieList>(this.createUrl, {
+            Name: name
+        });
     }
 }

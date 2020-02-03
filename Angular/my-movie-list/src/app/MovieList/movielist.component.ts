@@ -11,10 +11,15 @@ export class MovieListComponent implements OnInit {
     movieLists: IMovieList[] = [];
     @Input() name: string;
     create(): void {
-        this.movieLists.push(this.movieListService.createMovieList());
+        this.movieListService.createMovieList(this.name).subscribe({
+            next: movieList => this.movieLists.push(movieList)
+        });
     }
 
     ngOnInit(): void {
-        this.movieLists = this.movieListService.getMovieLists();
+        //TODO: add error handling
+        this.movieListService.getMovieLists().subscribe({
+            next: movieLists => this.movieLists = movieLists
+        });
     }
 }

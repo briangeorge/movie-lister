@@ -1,6 +1,6 @@
 interface IMovieList {
-    Id: number;
-    Name: string;
-    AverageRating: number;
-    MovieCount: number;
+    id: number;
+    name: string;
+    averageRating: number;
+    movieCount: number;
 }
