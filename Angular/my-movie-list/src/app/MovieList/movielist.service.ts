@@ -16,7 +16,7 @@ export class MovieListService {
         return this.http.get<IMovieList[]>(this.getUrl).pipe(catchError(this.handleError));
     }
     getMovieList(id: number): Observable<IMovieList> {
-        return this.http.get<IMovieList>(this.getSingleUrl, { params: { 'id': id.toString() } }).pipe(catchError(this.handleError));
+        return this.http.get<IMovieList>(this.getSingleUrl + '/' + id).pipe(catchError(this.handleError));
     }
 
     createMovieList(name: string): Observable<IMovieList> {
