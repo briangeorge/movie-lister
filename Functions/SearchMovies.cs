@@ -23,8 +23,6 @@ namespace Arcadia.Challenge
             string? searchValue,
             ILogger log)
         {
-            var userid = "1";
-
             if (string.IsNullOrEmpty(searchValue))
             {
                 return new BadRequestObjectResult("Must Provide Search Value.");

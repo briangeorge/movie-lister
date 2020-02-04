@@ -37,6 +37,40 @@ namespace Arcadia.Challenge.Repositories
             }
         }
 
+        internal async Task<Movie> GetMovieForUserAsync(int? id, string userid)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT COUNT(1) FROM MovieRating mr
+                            where mr.Id=@Id and mr.UserId=@UserId";
+                var exists = await connection.ExecuteScalarAsync<int>(sql, new { Id = id, UserId = userid });
+                if (exists == 0)
+                {
+                    sql = @"INSERT INTO MovieRating
+                                (UserId,MovieId)
+                            VALUES
+                                (@UserId, @Id)";
+                    await connection.ExecuteAsync(sql, new { Id = id, UserId = userid });
+                }
+                sql = @"SELECT
+                            m.Id,
+                            ImdbId,
+                            Title,
+                            Rated,
+                            Year,
+                            Genres,
+                            Director,
+                            Runtime,
+                            mr.Rating,
+                            DataPopulated
+                        FROM Movie m
+                        JOIN MovieRating mr
+                                        on mr.MovieId = m.Id
+                                        and mr.UserId=@UserId";
+                return await connection.QueryFirstOrDefaultAsync<Movie>(sql, new { Id = id, UserId = userid });
+            }
+        }
+
         public async Task<Movie> GetOrInsertAsync(Movie movie)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -68,6 +102,25 @@ namespace Arcadia.Challenge.Repositories
                 var idResult = await connection.ExecuteScalarAsync<int>(sql, movie);
                 movie.Id = idResult;
                 return movie;
+            }
+        }
+
+        internal async Task UpdateDataAsync(Movie movie)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"UPDATE Movie
+                        SET 
+                            ImdbId=@ImdbId,
+                            Title=@Title,
+                            Genres=@Genres,
+                            Director=@Director,
+                            Runtime=@Runtime,
+                            Rated=@Rated,
+                            Year=@Year,
+                            DataPopulated=1
+                        WHERE Id=@Id";
+                await connection.ExecuteAsync(sql, movie);
             }
         }
     }
