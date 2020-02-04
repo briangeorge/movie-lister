@@ -11,6 +11,7 @@ export class MovieListService {
     private getUrl: string = "http://localhost:7071/api/GetMovieLists";
     private getSingleUrl: string = "http://localhost:7071/api/GetMovieList";
     private createUrl: string = "http://localhost:7071/api/CreateMovieList";
+    private addMovieToListsUrl: string = "http://localhost:7071/api/AddMovieToLists";
     constructor(private http: HttpClient) { }
 
     getMovieLists(): Observable<IMovieList[]> {
@@ -23,6 +24,13 @@ export class MovieListService {
     createMovieList(name: string): Observable<IMovieList> {
         return this.http.post<IMovieList>(this.createUrl, {
             Name: name
+        }).pipe(catchError(this.handleError));
+    }
+
+    addMovieToLists(movieId: number, selectedLists: number[]): Observable<object> {
+        return this.http.post<object>(this.addMovieToListsUrl, {
+            movieId: movieId,
+            lists: selectedLists
         }).pipe(catchError(this.handleError));
     }
 

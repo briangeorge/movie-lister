@@ -13,7 +13,7 @@ export class MovieSearchComponent implements OnInit {
   errorMessage: string;
   constructor(private movieService: MovieService) { }
 
-  search() {
+  search(): void {
     if (this.searchValue && this.searchValue.length > 0) {
       this.movieService.searchMovies(this.searchValue).subscribe({
         next: movies => this.results = movies,
@@ -21,7 +21,7 @@ export class MovieSearchComponent implements OnInit {
       });
     }
   }
-  ngOnInit() {
+  ngOnInit():void {
   }
 
 }

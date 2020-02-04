@@ -13,7 +13,7 @@ export class MovieDetailComponent implements OnInit {
   private saveMessage: string;
   constructor(private route: ActivatedRoute, private router: Router, private movieService: MovieService) { }
 
-  saveRating() {
+  saveRating(): void {
     if (this.movie.rating) {
       this.movieService.saveRating(this.movie.id, this.movie.rating).subscribe({
         next: msg => this.saveMessage = msg['message'],
@@ -21,7 +21,7 @@ export class MovieDetailComponent implements OnInit {
       })
     }
   }
-  ngOnInit() {
+  ngOnInit(): void {
     let id = +this.route.snapshot.paramMap.get('id');
     this.movieService.getMovie(id).subscribe({
       next: movie => this.movie = movie,

@@ -15,7 +15,7 @@ export class MovielistDetailComponent implements OnInit {
     private router: Router,
     private movieListService: MovieListService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     let id = +this.route.snapshot.paramMap.get('id');
     this.movieListService.getMovieList(id).subscribe({
       next: movieList => this.movieList = movieList,
