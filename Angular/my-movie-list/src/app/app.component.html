@@ -1,9 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
   <h1>
-    Welcome to {{ title }}!
+    {{ title }}
   </h1>
+  <a [routerLink]="['/movielists']">My Lists</a>
 </div>
 <div>
-  <movielist-list></movielist-list>
+  <router-outlet></router-outlet>
 </div>

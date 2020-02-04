@@ -8,10 +8,15 @@ import { catchError } from 'rxjs/operators';
 })
 export class MovieListService {
     private getUrl: string = "http://localhost:7071/api/GetMovieLists";
+    private getSingleUrl: string = "http://localhost:7071/api/GetMovieList";
     private createUrl: string = "http://localhost:7071/api/CreateMovieList";
     constructor(private http: HttpClient) { }
+
     getMovieLists(): Observable<IMovieList[]> {
         return this.http.get<IMovieList[]>(this.getUrl).pipe(catchError(this.handleError));
+    }
+    getMovieList(id: number): Observable<IMovieList> {
+        return this.http.get<IMovieList>(this.getSingleUrl, { params: { 'id': id.toString() } }).pipe(catchError(this.handleError));
     }
 
     createMovieList(name: string): Observable<IMovieList> {
@@ -26,7 +31,7 @@ export class MovieListService {
         if (err.error instanceof ErrorEvent) {
             errorMessage = `An error ocurred: ${err.error.message}`;
         } else {
-            errorMessage = `${err.status} - ${err.error} ${err.message}`;
+            errorMessage = `${err.status} - ${err.error ? err.error : ''} ${err.message}`;
         }
 
         return throwError(errorMessage);
