@@ -1,1 +1,31 @@
-<p>search works!</p>
+<h1>
+    Search for a movie on IMDB
+</h1>
+
+<input [(ngModel)]='searchValue' type=text />
+<button (click)='search()'>Search</button>
+<span>{{errorMessage}}</span>
+<table *ngIf='results'>
+    <thead>
+        <th>Year</th>
+        <th>Title</th>
+        <th>My Rating</th>
+        <th>Add to list</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let movie of movieList.movies">
+            <td>
+                {{movie.year}}
+            </td>
+            <td>
+                <a [routerLink]="['/movie-detail',movie.Id]">{{movie.title}}</a>
+            </td>
+            <td>
+                {{movie.rating}}
+            </td>
+            <td>
+                <button>Add to list</button>
+            </td>
+        </tr>
+    </tbody>
+</table *ngIf='results'>

@@ -15,12 +15,12 @@ export class MovieListComponent implements OnInit {
     errorMessage: string;
     @Input() name: string;
     create(): void {
-        //if (this.name && this.name.length > 0) {
-        this.movieListService.createMovieList(this.name).subscribe({
-            next: movieList => this.movieLists.push(movieList),
-            error: err => this.errorMessage = err
-        });
-        //}
+        if (this.name && this.name.length > 0) {
+            this.movieListService.createMovieList(this.name).subscribe({
+                next: movieList => this.movieLists.push(movieList),
+                error: err => this.errorMessage = err
+            });
+        }
     }
 
     ngOnInit(): void {
