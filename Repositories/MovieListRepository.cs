@@ -13,7 +13,7 @@ public class MovieListRepository
         this._connectionString = connectionString;
     }
 
-    public async Task<IEnumerable<MovieList>> GetMovieListsAsync(string userId)
+    public async Task<IEnumerable<MovieList>> GetAsync(string userId)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -21,11 +21,30 @@ public class MovieListRepository
                             ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(m.UserRating) AS AverageRating
                         FROM
                             MovieList ml
-                        LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId and ml.UserId=@UserId
+                        LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId 
+                                        and ml.UserId=@userId
                         LEFT OUTER JOIN Movie m on m.Id = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
             return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
+        }
+    }
+
+    internal async Task<MovieList> GetAsync(string userid, int id)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var sql = @"SELECT 
+                            ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(m.UserRating) AS AverageRating
+                        FROM
+                            MovieList ml
+                        LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId 
+                                        and ml.Id=@Id 
+                                        and ml.UserId=@userId
+                        LEFT OUTER JOIN Movie m on m.Id = mtml.MovieId
+                        GROUP BY
+                            ml.Title, ml.Id";
+            return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id });
         }
     }
 

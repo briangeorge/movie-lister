@@ -4,6 +4,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Arcadia.Challenge
 {
@@ -19,10 +20,16 @@ namespace Arcadia.Challenge
 
             var repository = new MovieListRepository(ConnectionStringRepository.GetSqlAzureConnectionString("SQLConnectionString"));
 
-            //TODO: Add error handling
-            var movieLists = await repository.GetMovieListsAsync(userid);
+            try
+            {
+                var movieLists = await repository.GetAsync(userid);
+                return new OkObjectResult(movieLists);
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
 
-            return new OkObjectResult(movieLists);
         }
     }
 }
