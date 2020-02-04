@@ -1,1 +1,31 @@
-<p>movie-detail works!</p>
+<div *ngIf='movie'>
+    <h1>{{movie.title}}</h1>
+    <table>
+        <tbody>
+            <tr>
+                <th>Year</th>
+                <td>{{movie.Year}}</td>
+            </tr>
+            <tr>
+                <th>Genres</th>
+                <td>{{movie.genres}}</td>
+            </tr>
+            <tr>
+                <th>Director</th>
+                <td>{{movie.director}}</td>
+            </tr>
+            <tr>
+                <th>Runtime</th>
+                <td>{{movie.runtime}}</td>
+            </tr>
+            <tr>
+                <th>Rated</th>
+                <td>{{movie.rated}}</td>
+            </tr>
+            <tr>
+                <th>My Rating</th>
+                <td>{{movie.Rating}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

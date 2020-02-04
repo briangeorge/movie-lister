@@ -9,11 +9,17 @@ import { IMovie } from '../Models/IMovie';
 })
 export class MovieService {
     private searchUrl: string = "http://localhost:7071/api/SearchMovies";
+    private getDetailUrl: string = "http://localhost:7071/api/GetMovie";
     constructor(private http: HttpClient) { }
 
-    searchMovies(searchValue:string): Observable<IMovie[]> {
-        return this.http.get<IMovie[]>(this.searchUrl+'/'+searchValue).pipe(catchError(this.handleError));
+    searchMovies(searchValue: string): Observable<IMovie[]> {
+        return this.http.get<IMovie[]>(this.searchUrl + '/' + searchValue).pipe(catchError(this.handleError));
     }
+
+    getMovie(id: number): Observable<IMovie> {
+        return this.http.get<IMovie>(this.getDetailUrl + '/' + id).pipe(catchError(this.handleError));
+    }
+
 
     private handleError(err: HttpErrorResponse) {
         let errorMessage = '';

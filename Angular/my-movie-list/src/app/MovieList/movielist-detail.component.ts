@@ -20,7 +20,7 @@ export class MovielistDetailComponent implements OnInit {
     this.movieListService.getMovieList(id).subscribe({
       next: movieList => this.movieList = movieList,
       error: err => this.router.navigate(['/movielists'], { queryParams: { errorMessage: err } })
-    })
+    });
   }
 
 }
