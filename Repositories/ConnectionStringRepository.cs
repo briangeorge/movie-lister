@@ -1,12 +1,15 @@
 using System;
 
-public class ConnectionStringRepository
+namespace Arcadia.Challenge.Repositories
 {
-    public static string GetSqlAzureConnectionString(string name)
+    public class ConnectionStringRepository
     {
-        string conStr = System.Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
-        if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
-            conStr = System.Environment.GetEnvironmentVariable($"SQLAZURECONNSTR_{name}", EnvironmentVariableTarget.Process);
-        return conStr;
+        public static string GetSqlAzureConnectionString(string name)
+        {
+            string? conStr = Environment.GetEnvironmentVariable($"ConnectionStrings:{name}", EnvironmentVariableTarget.Process);
+            if (string.IsNullOrEmpty(conStr)) // Azure Functions App Service naming convention
+                conStr = Environment.GetEnvironmentVariable($"SQLAZURECONNSTR_{name}", EnvironmentVariableTarget.Process);
+            return conStr ?? string.Empty;
+        }
     }
 }

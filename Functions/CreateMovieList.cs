@@ -6,6 +6,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Arcadia.Challenge.Repositories;
+using Arcadia.Challenge.Models;
 
 namespace Arcadia.Challenge
 {

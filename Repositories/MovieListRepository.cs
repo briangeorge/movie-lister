@@ -1,22 +1,25 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Arcadia.Challenge.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-public class MovieListRepository
+namespace Arcadia.Challenge.Repositories
 {
-    private readonly string _connectionString;
-
-    public MovieListRepository(string connectionString)
+    public class MovieListRepository
     {
-        this._connectionString = connectionString;
-    }
+        private readonly string _connectionString;
 
-    public async Task<IEnumerable<MovieList>> GetAsync(string userId)
-    {
-        using (var connection = new SqlConnection(_connectionString))
+        public MovieListRepository(string connectionString)
         {
-            var sql = @"SELECT 
+            this._connectionString = connectionString;
+        }
+
+        public async Task<IEnumerable<MovieList>> GetAsync(string userId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT 
                             ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(m.UserRating) AS AverageRating
                         FROM
                             MovieList ml
@@ -25,15 +28,15 @@ public class MovieListRepository
                         LEFT OUTER JOIN Movie m on m.Id = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
-            return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
+                return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
+            }
         }
-    }
 
-    internal async Task<MovieList> GetAsync(string userid, int id)
-    {
-        using (var connection = new SqlConnection(_connectionString))
+        internal async Task<MovieList> GetAsync(string userid, int id)
         {
-            var sql = @"SELECT 
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT 
                             ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(mr.Rating) AS AverageRating
                         FROM
                             MovieList ml
@@ -43,18 +46,19 @@ public class MovieListRepository
                         LEFT OUTER JOIN MovieRating mr on mr.MovieId = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
-            return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id });
+                return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id });
+            }
         }
-    }
 
-    public async Task<int> CreateMovieListAsync(MovieList data)
-    {
-        using (var connection = new SqlConnection(_connectionString))
+        public async Task<int> CreateMovieListAsync(MovieList data)
         {
-            var sql = @"INSERT INTO MovieList 
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"INSERT INTO MovieList 
                             (Title, UserId) VALUES(@Name, @UserId);
                         SELECT SCOPE_IDENTITY()";
-            return await connection.ExecuteScalarAsync<int>(sql, data);
+                return await connection.ExecuteScalarAsync<int>(sql, data);
+            }
         }
     }
 }

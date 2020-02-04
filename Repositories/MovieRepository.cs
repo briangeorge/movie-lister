@@ -3,20 +3,23 @@ using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-public class MovieRepository
+
+namespace Arcadia.Challenge.Repositories
 {
-    private readonly string _connectionString;
-
-    public MovieRepository(string connectionString)
+    public class MovieRepository
     {
-        this._connectionString = connectionString;
-    }
+        private readonly string _connectionString;
 
-    public async Task<IEnumerable<Movie>> GetByListIdAsync(int listId)
-    {
-        using (var connection = new SqlConnection(_connectionString))
+        public MovieRepository(string connectionString)
         {
-            var sql = @"SELECT
+            this._connectionString = connectionString;
+        }
+
+        public async Task<IEnumerable<Movie>> GetByListIdAsync(int listId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT
                             m.Id,
                             ImdbId,
                             Title,
@@ -30,7 +33,8 @@ public class MovieRepository
                         INNER JOIN Movie m on m.Id = mtml.MovieId and mtml.MovieListId=@ListId
                         LEFT OUTER JOIN MovieRating mr
                                         on mr.MovieId = m.Id";
-            return await connection.QueryAsync<Movie>(sql, new { ListId = listId });
+                return await connection.QueryAsync<Movie>(sql, new { ListId = listId });
+            }
         }
     }
 }
