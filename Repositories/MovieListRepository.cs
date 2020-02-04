@@ -20,19 +20,20 @@ namespace Arcadia.Challenge.Repositories
             using (var connection = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT 
-                            ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(m.UserRating) AS AverageRating
+                            ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(mr.Rating) AS AverageRating
                         FROM
                             MovieList ml
                         LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId 
-                                        and ml.UserId=@userId
+                                        and ml.UserId=@UserId
                         LEFT OUTER JOIN Movie m on m.Id = mtml.MovieId
+                        LEFT OUTER JOIN MovieRating mr on mtml.MovieId = mr.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
-                return await connection.QueryAsync<MovieList>(sql, new { userId = userId });
+                return await connection.QueryAsync<MovieList>(sql, new { UserId = userId });
             }
         }
 
-        internal async Task<MovieList> GetAsync(string userid, int id)
+        internal async Task<MovieList> GetAsync(string userId, int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -42,11 +43,11 @@ namespace Arcadia.Challenge.Repositories
                             MovieList ml
                         LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId 
                                         and ml.Id=@Id 
-                                        and ml.UserId=@userId
+                                        and ml.UserId=@UserId
                         LEFT OUTER JOIN MovieRating mr on mr.MovieId = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
-                return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id });
+                return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id, UserId = userId });
             }
         }
 

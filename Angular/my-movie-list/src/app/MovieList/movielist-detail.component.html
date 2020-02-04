@@ -1,5 +1,3 @@
-<p>movielist-detail works!</p>
-
 <div>
     {{movieList.name}}
 </div>
@@ -8,15 +6,15 @@
     <thead>
         <th>Year</th>
         <th>Title</th>
-        <th>Rating</th>
+        <th>My Rating</th>
     </thead>
     <tbody>
-        <tr *ngFor="let movie in movies">
+        <tr *ngFor="let movie of movieList.movies">
             <td>
                 {{movie.year}}
             </td>
             <td>
-                {{movie.title}}
+                <a [routerLink]="['/movie-detail',movie.Id]">{{movie.title}}</a>
             </td>
             <td>
                 {{movie.rating}}
