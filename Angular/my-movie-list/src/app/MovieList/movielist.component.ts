@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MovieListService } from './movielist.service';
 import { ActivatedRoute } from '@angular/router';
+import { IMovieList } from '../Models/IMovieList';
 
 @Component({
     selector: 'movielist-list',

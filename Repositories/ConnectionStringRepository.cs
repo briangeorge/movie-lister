@@ -1,4 +1,5 @@
 using System;
+#nullable enable
 
 namespace Arcadia.Challenge.Repositories
 {

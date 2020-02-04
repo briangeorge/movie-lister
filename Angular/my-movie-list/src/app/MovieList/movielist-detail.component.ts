@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieListService } from './movielist.service';
+import { IMovieList } from '../Models/IMovieList';
 
 @Component({
   selector: 'app-movielist-detail',

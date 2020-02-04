@@ -4,7 +4,8 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     <RootNamespace>Arcadia_Movies</RootNamespace>
     <DefaultItemExcludes>$(DefaultItemExcludes);Angular\**\*</DefaultItemExcludes>
-    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+<NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.1" />
