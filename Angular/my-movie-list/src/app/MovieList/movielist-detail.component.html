@@ -1,25 +1,27 @@
-<div>
-    {{movieList.name}}
-</div>
+<div *ngIf='movieList'>
+    <div>
+        {{movieList.name}}
+    </div>
 
-<table>
-    <thead>
-        <th>Year</th>
-        <th>Title</th>
-        <th>My Rating</th>
-    </thead>
-    <tbody>
-        <tr *ngFor="let movie of movieList.movies">
-            <td>
-                {{movie.year}}
-            </td>
-            <td>
-                <a [routerLink]="['/movie-detail',movie.Id]">{{movie.title}}</a>
-            </td>
-            <td>
-                {{movie.rating}}
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <table>
+        <thead>
+            <th>Year</th>
+            <th>Title</th>
+            <th>My Rating</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let movie of movieList.movies">
+                <td>
+                    {{movie.year}}
+                </td>
+                <td>
+                    <a [routerLink]="['/movie-detail',movie.Id]">{{movie.title}}</a>
+                </td>
+                <td>
+                    {{movie.rating}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 <a [routerLink]="['/movielists']">back to lists</a>
