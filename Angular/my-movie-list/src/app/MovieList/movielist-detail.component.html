@@ -1,4 +1,27 @@
 <p>movielist-detail works!</p>
 
+<div>
+    {{movieList.name}}
+</div>
 
+<table>
+    <thead>
+        <th>Year</th>
+        <th>Title</th>
+        <th>Rating</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let movie in movies">
+            <td>
+                {{movie.year}}
+            </td>
+            <td>
+                {{movie.title}}
+            </td>
+            <td>
+                {{movie.rating}}
+            </td>
+        </tr>
+    </tbody>
+</table>
 <a [routerLink]="['/movielists']">back to lists</a>
