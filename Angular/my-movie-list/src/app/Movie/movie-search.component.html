@@ -13,12 +13,12 @@
         <th>Add to list</th>
     </thead>
     <tbody>
-        <tr *ngFor="let movie of movieList.movies">
+        <tr *ngFor="let movie of results">
             <td>
                 {{movie.year}}
             </td>
             <td>
-                <a [routerLink]="['/movie-detail',movie.Id]">{{movie.title}}</a>
+                <a [routerLink]="['/movie-detail/',movie.id]">{{movie.title}}</a>
             </td>
             <td>
                 {{movie.rating}}
@@ -28,4 +28,4 @@
             </td>
         </tr>
     </tbody>
-</table *ngIf='results'>
+</table>

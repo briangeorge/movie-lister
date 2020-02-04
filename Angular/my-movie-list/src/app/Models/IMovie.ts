@@ -8,4 +8,5 @@ export interface IMovie {
     director: string;
     runtime: string;
     rated: string;
+    dataPopulated: false;
 }
