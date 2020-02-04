@@ -34,13 +34,13 @@ public class MovieListRepository
         using (var connection = new SqlConnection(_connectionString))
         {
             var sql = @"SELECT 
-                            ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(m.UserRating) AS AverageRating
+                            ml.Title as Name, ml.Id, COUNT(mtml.Id) AS MovieCount, AVG(mr.Rating) AS AverageRating
                         FROM
                             MovieList ml
                         LEFT OUTER JOIN MovieToMovieList mtml on ml.Id = mtml.MovieListId 
                                         and ml.Id=@Id 
                                         and ml.UserId=@userId
-                        LEFT OUTER JOIN Movie m on m.Id = mtml.MovieId
+                        LEFT OUTER JOIN MovieRating mr on mr.MovieId = mtml.MovieId
                         GROUP BY
                             ml.Title, ml.Id";
             return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id });
