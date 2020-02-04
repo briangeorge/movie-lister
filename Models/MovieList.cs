@@ -10,4 +10,6 @@ public class MovieList
 
     public int MovieCount { get; set; }
     public float AverageRating { get; set; }
+
+    public IEnumerable<Movie> Movies {get;set;}
 }

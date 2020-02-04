@@ -26,13 +26,18 @@ namespace Arcadia.Challenge
                 return new BadRequestObjectResult("Must Provide Id.");
             }
 
-            var repository = new MovieListRepository(ConnectionStringRepository.GetSqlAzureConnectionString("SQLConnectionString"));
+            var listRepository = new MovieListRepository(ConnectionStringRepository.GetSqlAzureConnectionString("SQLConnectionString"));
+            var movieRepository = new MovieRepository(ConnectionStringRepository.GetSqlAzureConnectionString("SQLConnectionString"));
+            MovieList data = await listRepository.GetAsync(userid, id.Value);
 
-            MovieList data = await repository.GetAsync(userid, id.Value);
+            if (data == null)
+            {
+                return new BadRequestObjectResult("Invalid Id Provided.");
+            }
 
-            return data != null
-                ? (ActionResult)new OkObjectResult(data)
-                : new BadRequestObjectResult("Invalid Id Provided.");
+            data.Movies = await movieRepository.GetByListIdAsync(data.Id);
+
+            return new OkObjectResult(data);
         }
     }
 }

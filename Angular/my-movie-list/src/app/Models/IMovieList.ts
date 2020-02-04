@@ -1,4 +1,4 @@
-interface IMovieList {
+export interface IMovieList {
     id: number;
     name: string;
     averageRating: number;
