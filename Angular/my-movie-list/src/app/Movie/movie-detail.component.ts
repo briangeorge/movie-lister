@@ -10,8 +10,17 @@ import { IMovie } from '../Models/IMovie';
 })
 export class MovieDetailComponent implements OnInit {
   private movie: IMovie;
+  private saveMessage: string;
   constructor(private route: ActivatedRoute, private router: Router, private movieService: MovieService) { }
 
+  saveRating() {
+    if (this.movie.rating) {
+      this.movieService.saveRating(this.movie.id, this.movie.rating).subscribe({
+        next: msg => this.saveMessage = msg['message'],
+        error: err => this.saveMessage = err
+      })
+    }
+  }
   ngOnInit() {
     let id = +this.route.snapshot.paramMap.get('id');
     this.movieService.getMovie(id).subscribe({

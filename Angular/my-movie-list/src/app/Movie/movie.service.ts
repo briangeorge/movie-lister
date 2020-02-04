@@ -10,6 +10,7 @@ import { IMovie } from '../Models/IMovie';
 export class MovieService {
     private searchUrl: string = "http://localhost:7071/api/SearchMovies";
     private getDetailUrl: string = "http://localhost:7071/api/GetMovie";
+    private saveRatingUrl: string = "http://localhost:7071/api/RateMovie";
     constructor(private http: HttpClient) { }
 
     searchMovies(searchValue: string): Observable<IMovie[]> {
@@ -18,6 +19,10 @@ export class MovieService {
 
     getMovie(id: number): Observable<IMovie> {
         return this.http.get<IMovie>(this.getDetailUrl + '/' + id).pipe(catchError(this.handleError));
+    }
+
+    saveRating(id: number, rating: number): Observable<object> {
+        return this.http.post<object>(this.saveRatingUrl + '/' + id, { rating: rating }).pipe(catchError(this.handleError));
     }
 
 

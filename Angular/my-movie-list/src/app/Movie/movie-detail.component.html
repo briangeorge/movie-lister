@@ -24,7 +24,9 @@
             </tr>
             <tr>
                 <th>My Rating</th>
-                <td>{{movie.Rating}}</td>
+                <td><input type="number" min="0" max="5" [(ngModel)]='movie.rating'>
+                    <button (click)='saveRating()'>Save!</button>
+                    <span>{{saveMessage}}</span></td>
             </tr>
         </tbody>
     </table>

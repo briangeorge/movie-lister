@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
@@ -42,7 +43,7 @@ namespace Arcadia.Challenge.Repositories
             using (var connection = new SqlConnection(_connectionString))
             {
                 var sql = @"SELECT COUNT(1) FROM MovieRating mr
-                            where mr.Id=@Id and mr.UserId=@UserId";
+                            where mr.MovieId=@Id and mr.UserId=@UserId";
                 var exists = await connection.ExecuteScalarAsync<int>(sql, new { Id = id, UserId = userid });
                 if (exists == 0)
                 {
@@ -61,13 +62,41 @@ namespace Arcadia.Challenge.Repositories
                             Genres,
                             Director,
                             Runtime,
-                            mr.Rating,
+                            mr.Rating as Rating,
                             DataPopulated
                         FROM Movie m
                         JOIN MovieRating mr
                                         on mr.MovieId = m.Id
+                                        and m.Id=@Id
                                         and mr.UserId=@UserId";
                 return await connection.QueryFirstOrDefaultAsync<Movie>(sql, new { Id = id, UserId = userid });
+            }
+        }
+
+        internal async Task SaveRatingAsync(string userid, int? id, int rating)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT COUNT(1) FROM MovieRating mr
+                            where mr.MovieId=@Id and mr.UserId=@UserId";
+                var exists = await connection.ExecuteScalarAsync<int>(sql, new { Id = id, UserId = userid });
+                if (exists == 0)
+                {
+                    sql = @"INSERT INTO MovieRating
+                                (UserId,MovieId, Rating)
+                            VALUES
+                                (@UserId, @Id, @Rating)";
+                    await connection.ExecuteAsync(sql, new { Id = id, UserId = userid, Rating = rating });
+                }
+                else
+                {
+                    sql = @"UPDATE MovieRating
+                                SET Rating=@Rating
+                            WHERE
+                                UserId=@UserId
+                                AND MovieId=@Id";
+                    await connection.ExecuteAsync(sql, new { Id = id, UserId = userid, Rating = rating });
+                }
             }
         }
 
