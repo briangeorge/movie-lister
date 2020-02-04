@@ -14,7 +14,7 @@ namespace Arcadia.Challenge
     {
         [FunctionName("GetMovieList")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "GetMovieList/{id}")] HttpRequest req,
             int? id,
             ILogger log)
         {
