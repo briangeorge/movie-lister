@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -41,7 +40,8 @@ namespace Arcadia.Challenge
                 string omdbResult = string.Empty;
                 using (var client = new HttpClient())
                 {
-                    var result = await client.GetAsync($"http://www.omdbapi.com/?type=movie&i={movie.ImdbId}&apiKey=a3762861");
+                    var apiKey = Environment.GetEnvironmentVariable("OmdbAPIKey", EnvironmentVariableTarget.Process);
+                    var result = await client.GetAsync($"http://www.omdbapi.com/?type=movie&i={movie.ImdbId}&apiKey={apiKey}");
                     if (result == null || result.Content == null)
                     {
                         return new BadRequestObjectResult("An error ocurred in the OMDB API");

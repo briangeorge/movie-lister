@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Arcadia.Challenge.Models;
 using Arcadia.Challenge.Repositories;
+using System;
 
 namespace Arcadia.Challenge
 {
@@ -31,7 +32,8 @@ namespace Arcadia.Challenge
             string omdbResult = string.Empty;
             using (var client = new HttpClient())
             {
-                var result = await client.GetAsync($"http://www.omdbapi.com/?type=movie&s={searchValue}&apiKey=a3762861");
+                var apiKey = Environment.GetEnvironmentVariable("OmdbAPIKey", EnvironmentVariableTarget.Process);
+                var result = await client.GetAsync($"http://www.omdbapi.com/?type=movie&s={searchValue}&apiKey={apiKey}");
                 if (result == null || result.Content == null)
                 {
                     return new BadRequestObjectResult("An error ocurred in the OMDB API");
