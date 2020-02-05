@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { MovieListService } from '../MovieList/movielist.service';
 import { IMovieList } from '../Models/IMovieList';
 
@@ -9,8 +9,9 @@ import { IMovieList } from '../Models/IMovieList';
 })
 export class AddMovieToListComponent implements OnInit {
   movieLists: IMovieList[];
-  selectedLists: number[];
-  movieId: number;
+  selectedLists: number[] = [];
+  resultMessage: string;
+  @Input() movieId: number;
   @Output() messageEvent = new EventEmitter<string>();
   constructor(private movieListService: MovieListService) { }
 
@@ -21,11 +22,30 @@ export class AddMovieToListComponent implements OnInit {
     });
   }
 
+  updateSelected(event: any, id: number): void {
+    const index = this.selectedLists.indexOf(id);
+    if (event.currentTarget.checked) {
+      if (index < 0) {
+        this.selectedLists.push(id);
+      }
+    } else {
+      if (index >= 0) {
+        this.selectedLists.splice(index, 1);
+      }
+    }
+  }
+
   saveClick(): void {
     this.movieListService.addMovieToLists(this.movieId, this.selectedLists).subscribe({
-      next: ()=> this.messageEvent.emit("Saved!"),
-      error: ()=>this.messageEvent.emit("Failed!")
-    })
+      next: () => {
+        this.messageEvent.emit("Saved!");
+        this.resultMessage = "Saved!";
+      },
+      error: err => {
+        this.messageEvent.emit("Failed!");
+        this.resultMessage = err;
+      }
+    });
   }
 
 }

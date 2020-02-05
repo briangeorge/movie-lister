@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Arcadia.Challenge.Models;
@@ -48,6 +49,33 @@ namespace Arcadia.Challenge.Repositories
                         GROUP BY
                             ml.Title, ml.Id";
                 return await connection.QueryFirstOrDefaultAsync<MovieList>(sql, new { Id = id, UserId = userId });
+            }
+        }
+
+        internal async Task AddMovieToListsAsync(int movieId, List<int> lists, string userid)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sql = @"SELECT MovieListId
+                            FROM MovieToMovieList
+                            WHERE MovieId=@MovieId AND MovieListId IN @MovieListIds";
+                var existing = (await connection.QueryAsync<int>(sql, new
+                {
+                    MovieId = movieId,
+                    MovieListIds = lists
+                })).ToList();
+                var filteredLists = lists.Except(existing).ToList();
+                sql = @"INSERT INTO MovieToMovieList 
+                            (MovieListId, MovieId)
+                            SELECT ml.Id, @MovieId
+                            FROM MovieList ml
+                            WHERE ml.UserId=@UserId AND ml.Id IN @MovieListIds";
+                await connection.ExecuteScalarAsync<int>(sql, new
+                {
+                    MovieId = movieId,
+                    UserId = userid,
+                    MovieListIds = filteredLists
+                });
             }
         }
 

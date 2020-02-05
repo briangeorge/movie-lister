@@ -1,1 +1,8 @@
-<p>add-movie-to-list works!</p>
+<span>Select lists to add this movie to</span>
+<ul>
+    <li *ngFor='let list of movieLists'>
+        <input type='checkbox' (change)="updateSelected($event, list.id)" />{{list.name}}
+    </li>
+</ul>
+<button (click)='saveClick()'>Add To Selected Lists</button>
+<span>{{resultMessage}}</span>
