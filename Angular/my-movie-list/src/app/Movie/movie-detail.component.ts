@@ -9,8 +9,8 @@ import { IMovie } from '../Models/IMovie';
   styleUrls: ['./movie-detail.component.css']
 })
 export class MovieDetailComponent implements OnInit {
-  private movie: IMovie;
-  private saveMessage: string;
+  movie: IMovie;
+  saveMessage: string;
   constructor(private route: ActivatedRoute, private router: Router, private movieService: MovieService) { }
 
   saveRating(): void {
