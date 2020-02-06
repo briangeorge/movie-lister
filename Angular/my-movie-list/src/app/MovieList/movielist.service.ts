@@ -3,15 +3,16 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http"
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { IMovieList } from '../Models/IMovieList';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MovieListService {
-    private getUrl: string = "http://localhost:7071/api/GetMovieLists";
-    private getSingleUrl: string = "http://localhost:7071/api/GetMovieList";
-    private createUrl: string = "http://localhost:7071/api/CreateMovieList";
-    private addMovieToListsUrl: string = "http://localhost:7071/api/AddMovieToLists";
+    private getUrl: string = environment.baseUrl + "/api/GetMovieLists";
+    private getSingleUrl: string = environment.baseUrl + "/api/GetMovieList";
+    private createUrl: string = environment.baseUrl + "/api/CreateMovieList";
+    private addMovieToListsUrl: string = environment.baseUrl + "/api/AddMovieToLists";
     constructor(private http: HttpClient) { }
 
     getMovieLists(): Observable<IMovieList[]> {

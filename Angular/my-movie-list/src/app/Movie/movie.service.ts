@@ -3,14 +3,15 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http"
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { IMovie } from '../Models/IMovie';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MovieService {
-    private searchUrl: string = "http://localhost:7071/api/SearchMovies";
-    private getDetailUrl: string = "http://localhost:7071/api/GetMovie";
-    private saveRatingUrl: string = "http://localhost:7071/api/RateMovie";
+    private searchUrl: string = environment.baseUrl + "/api/SearchMovies";
+    private getDetailUrl: string = environment.baseUrl + "/api/GetMovie";
+    private saveRatingUrl: string = environment.baseUrl + "/api/RateMovie";
     constructor(private http: HttpClient) { }
 
     searchMovies(searchValue: string): Observable<IMovie[]> {

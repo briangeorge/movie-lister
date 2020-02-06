@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MovieListService } from '../MovieList/movielist.service';
 import { IMovieList } from '../Models/IMovieList';
 
@@ -12,7 +12,6 @@ export class AddMovieToListComponent implements OnInit {
   selectedLists: number[] = [];
   resultMessage: string;
   @Input() movieId: number;
-  @Output() messageEvent = new EventEmitter<string>();
   constructor(private movieListService: MovieListService) { }
 
   ngOnInit(): void {
@@ -38,11 +37,9 @@ export class AddMovieToListComponent implements OnInit {
   saveClick(): void {
     this.movieListService.addMovieToLists(this.movieId, this.selectedLists).subscribe({
       next: () => {
-        this.messageEvent.emit("Saved!");
         this.resultMessage = "Saved!";
       },
       error: err => {
-        this.messageEvent.emit("Failed!");
         this.resultMessage = err;
       }
     });
